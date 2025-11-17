@@ -1,11 +1,13 @@
-version: '3.8'
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
+      platforms:
+        - linux/arm64
+        - linux/amd64
     container_name: travianz-web
+    platform: linux/arm64
     ports:
       - "8080:80"
     volumes:
@@ -20,8 +22,9 @@ services:
     restart: unless-stopped
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     container_name: travianz-db
+    platform: linux/arm64
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-travian}
@@ -40,6 +43,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: travianz-phpmyadmin
+    platform: linux/arm64
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
