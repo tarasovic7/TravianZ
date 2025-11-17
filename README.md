@@ -41,7 +41,9 @@ docker-compose up -d
 # Open browser to http://localhost:8080/install
 ```
 
-For detailed Docker setup instructions, including ARM64-specific notes, see [DOCKER_README.md](DOCKER_README.md)
+**Documentation:**
+- For detailed Docker setup instructions and ARM64 notes: [DOCKER_README.md](DOCKER_README.md)
+- For Orange Pi 5 specific setup guide: [ORANGE_PI_5_SETUP.md](ORANGE_PI_5_SETUP.md)
 
 **Quick links:**
 * [Download and Updates](https://github.com/Shadowss/TravianZ) &raquo;&raquo; https://github.com/Shadowss/TravianZ
