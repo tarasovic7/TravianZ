@@ -9,6 +9,15 @@ This guide will help you set up TravianZ using Docker and Docker Compose for eas
 - At least 2GB of free RAM
 - At least 5GB of free disk space
 
+## ARM64 Architecture Support (Orange Pi 5, Raspberry Pi, etc.)
+
+This Docker setup fully supports ARM64 architecture devices like Orange Pi 5, Raspberry Pi 4/5, and other ARM-based single-board computers. The configuration uses:
+- **MySQL 8.0** (ARM64 compatible)
+- **PHP 7.4 with Apache 2.4** (ARM64 compatible)
+- **phpMyAdmin** (ARM64 compatible)
+
+All services are configured with `platform: linux/arm64` to ensure proper image selection on ARM devices.
+
 ## Quick Start
 
 ### 1. Clone the Repository
@@ -291,6 +300,55 @@ services:
   web:
     volumes:
       - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini
+```
+
+## ARM64 Specific Notes (Orange Pi 5, Raspberry Pi, etc.)
+
+### Verified Compatibility
+
+This Docker setup has been optimized for ARM64 devices and uses:
+- **MySQL 8.0**: Official ARM64 support
+- **PHP 7.4-Apache**: Multi-architecture support (ARM64/AMD64)
+- **phpMyAdmin**: Multi-architecture support
+
+### Performance Considerations for ARM Devices
+
+1. **Memory Usage**: ARM devices like Orange Pi 5 typically have limited RAM (4GB-16GB). Consider adjusting MySQL buffer pool:
+
+```yaml
+services:
+  db:
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --sql_mode=""
+      --innodb_buffer_pool_size=256M
+```
+
+2. **CPU Optimization**: The Orange Pi 5 uses Rockchip RK3588S with 8 cores. Docker will automatically use available cores.
+
+3. **Storage**: Use fast storage (SSD/eMMC) for better database performance on ARM devices.
+
+### Building on ARM64
+
+When first running on an ARM device, Docker will automatically pull ARM64-compatible images. The initial setup may take longer due to:
+- Image downloads optimized for ARM64
+- First-time volume initialization
+
+Expected first-run time on Orange Pi 5: 5-10 minutes
+
+### Troubleshooting ARM-Specific Issues
+
+If you encounter platform-related errors, verify Docker is using ARM64:
+
+```bash
+docker info | grep Architecture
+# Should show: Architecture: aarch64
+```
+
+To explicitly build for ARM64:
+
+```bash
+docker-compose build --platform linux/arm64
 ```
 
 ## Updates
